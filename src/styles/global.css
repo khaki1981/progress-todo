@@ -58,7 +58,7 @@ button {
   color: var(--fg);
   min-height: 686px;
   overflow: hidden;
-  padding: 0 22px 30px;
+  padding: 43px 22px 30px;
   position: relative;
   width: 316px;
 }
@@ -73,84 +73,6 @@ button {
   transform: translateX(-50%);
   width: 7px;
   z-index: 1;
-}
-
-.status-bar {
-  align-items: end;
-  color: var(--fg);
-  display: flex;
-  font-size: 12px;
-  font-weight: 700;
-  height: 43px;
-  justify-content: space-between;
-  padding: 0 3px 7px;
-}
-
-.status-bar__icons {
-  align-items: center;
-  display: flex;
-  gap: 7px;
-}
-
-.status-bar__signal {
-  align-items: end;
-  display: flex;
-  gap: 2px;
-  height: 11px;
-}
-
-.status-bar__signal span {
-  background: var(--fg);
-  border-radius: 1px;
-  display: block;
-  width: 3px;
-}
-
-.status-bar__signal span:nth-child(1) {
-  height: 5px;
-}
-
-.status-bar__signal span:nth-child(2) {
-  height: 7px;
-}
-
-.status-bar__signal span:nth-child(3) {
-  height: 9px;
-}
-
-.status-bar__signal span:nth-child(4) {
-  height: 11px;
-}
-
-.status-bar__battery {
-  border: 1.4px solid var(--fg);
-  border-radius: 3px;
-  display: block;
-  height: 11px;
-  position: relative;
-  width: 22px;
-}
-
-.status-bar__battery::after {
-  background: var(--fg);
-  border-radius: 0 2px 2px 0;
-  content: '';
-  height: 5px;
-  position: absolute;
-  right: -4px;
-  top: 2px;
-  width: 2px;
-}
-
-.status-bar__battery span {
-  background: var(--fg);
-  border-radius: 1px;
-  bottom: 2px;
-  display: block;
-  left: 2px;
-  position: absolute;
-  top: 2px;
-  width: 13px;
 }
 
 .app-shell__header {
@@ -481,17 +403,6 @@ button {
   width: 52px;
 }
 
-.home-indicator {
-  background: rgba(27, 24, 19, 0.2);
-  border-radius: 999px;
-  bottom: 16px;
-  height: 4px;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%);
-  width: 116px;
-}
-
 .settings-dialog {
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -645,10 +556,6 @@ button {
   .progress__message {
     background: rgba(255, 214, 75, 0.12);
     color: var(--accent);
-  }
-
-  .home-indicator {
-    background: rgba(255, 247, 223, 0.24);
   }
 
   .modal-backdrop {

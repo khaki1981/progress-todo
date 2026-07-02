@@ -63,21 +63,6 @@ export function HomeScreen() {
       <section className="app-shell" aria-label="Progress Todo home">
         <div className="device-camera" aria-hidden="true" />
 
-        <div className="status-bar" aria-hidden="true">
-          <span>9:41</span>
-          <div className="status-bar__icons">
-            <span className="status-bar__signal">
-              <span />
-              <span />
-              <span />
-              <span />
-            </span>
-            <span className="status-bar__battery">
-              <span />
-            </span>
-          </div>
-        </div>
-
         <header className="app-shell__header">
           <div>
             <p className="app-shell__eyebrow">{formatToday()}</p>
@@ -109,8 +94,6 @@ export function HomeScreen() {
         <button className="add-fab" type="button" aria-label="Add todo">
           +
         </button>
-
-        <div className="home-indicator" aria-hidden="true" />
 
         <SettingsDialog isOpen={false} />
         <ProjectFormDialog
