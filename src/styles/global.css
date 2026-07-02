@@ -2,8 +2,12 @@
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #0f172a;
-  background-color: #f8fafc;
+  color: #1f2933;
+  background-color: #f6f7f9;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -14,4 +18,197 @@ body {
 
 #root {
   min-height: 100vh;
+}
+
+.app-shell {
+  display: grid;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 1040px;
+  min-height: 100vh;
+  padding: 32px 20px 44px;
+}
+
+.app-shell__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.app-shell__eyebrow {
+  color: #0f8b8d;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+.app-shell__header h1 {
+  font-size: 3.25rem;
+  line-height: 1;
+  margin: 0;
+}
+
+.app-shell__content {
+  align-items: start;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(280px, 380px) 1fr;
+}
+
+.project-tabs {
+  align-items: center;
+  border-bottom: 1px solid #d7dce2;
+  display: flex;
+  gap: 8px;
+  min-height: 44px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.project-tabs__empty,
+.project-tabs__tab {
+  border: 1px solid #d7dce2;
+  border-radius: 999px;
+  color: #52606d;
+  flex: 0 0 auto;
+  font-size: 0.94rem;
+  padding: 8px 14px;
+}
+
+.project-tabs__tab[data-active='true'] {
+  background: #0f8b8d;
+  border-color: #0f8b8d;
+  color: #ffffff;
+}
+
+.progress {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #d7dce2;
+  border-radius: 8px;
+  display: grid;
+  justify-items: center;
+  min-height: 360px;
+  padding: 28px;
+  position: relative;
+}
+
+.progress__chart {
+  display: block;
+  height: min(64vw, 260px);
+  max-height: 260px;
+  max-width: 260px;
+  transform: rotate(-90deg);
+  width: min(64vw, 260px);
+}
+
+.progress__track {
+  stroke: #dce3ea;
+}
+
+.progress__value {
+  stroke: #f45d48;
+  transition: stroke-dashoffset 180ms ease;
+}
+
+.progress__label {
+  align-items: center;
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  position: absolute;
+}
+
+.progress__label strong {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.progress__label span {
+  color: #52606d;
+  font-size: 0.92rem;
+}
+
+.todo-list {
+  background: #ffffff;
+  border: 1px solid #d7dce2;
+  border-radius: 8px;
+  min-height: 360px;
+  padding: 20px;
+}
+
+.todo-list__empty {
+  align-items: center;
+  color: #52606d;
+  display: flex;
+  min-height: 316px;
+}
+
+.todo-list__items {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.todo-item {
+  align-items: center;
+  border: 1px solid #d7dce2;
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 12px 1fr auto;
+  min-height: 52px;
+  padding: 12px;
+}
+
+.todo-item__color {
+  border-radius: 999px;
+  height: 12px;
+  width: 12px;
+}
+
+.todo-item__title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.todo-item__status {
+  color: #52606d;
+  font-size: 0.84rem;
+}
+
+.settings-dialog {
+  border: 1px solid #d7dce2;
+  border-radius: 8px;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    gap: 20px;
+    padding: 24px 16px 36px;
+  }
+
+  .app-shell__content {
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell__header h1 {
+    font-size: 2.35rem;
+  }
+
+  .progress,
+  .todo-list {
+    min-height: 300px;
+  }
+
+  .progress__label strong {
+    font-size: 2.75rem;
+  }
+
+  .todo-list__empty {
+    min-height: 256px;
+  }
 }

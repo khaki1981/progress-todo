@@ -1,3 +1,10 @@
+import { HomeScreen } from './components/HomeScreen';
+import { AppStoreProvider } from './store/appStore';
+
 export default function App() {
-  return <div>Progress Todo</div>;
+  return (
+    <AppStoreProvider>
+      <HomeScreen />
+    </AppStoreProvider>
+  );
 }
