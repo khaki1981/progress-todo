@@ -1,5 +1,10 @@
+import { useState } from 'react';
 import { useAppState } from '../hooks/useAppState';
+import { useProjects } from '../hooks/useProjects';
 import { ProgressCircle } from './ProgressCircle';
+import { ProjectActions } from './ProjectActions';
+import { ProjectDeleteDialog } from './ProjectDeleteDialog';
+import { ProjectFormDialog } from './ProjectFormDialog';
 import { ProjectTabs } from './ProjectTabs';
 import { SettingsDialog } from './SettingsDialog';
 import { TodoList } from './TodoList';
@@ -16,7 +21,42 @@ const formatToday = () => {
 };
 
 export function HomeScreen() {
-  const { activeProject, progress, projects } = useAppState();
+  const { progress } = useAppState();
+  const {
+    activeProject,
+    activeProjectId,
+    addProject,
+    deleteProject,
+    projects,
+    renameProject,
+    selectProject,
+  } = useProjects();
+  const [projectDialogMode, setProjectDialogMode] = useState<
+    'add' | 'edit' | null
+  >(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const closeProjectDialog = () => setProjectDialogMode(null);
+  const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
+
+  const handleProjectSubmit = (name: string) => {
+    if (projectDialogMode === 'add') {
+      addProject(name);
+    }
+
+    if (projectDialogMode === 'edit' && activeProject) {
+      renameProject(activeProject.id, name);
+    }
+
+    closeProjectDialog();
+  };
+
+  const handleDeleteProject = () => {
+    if (activeProject) {
+      deleteProject(activeProject.id);
+    }
+
+    closeDeleteDialog();
+  };
 
   return (
     <main className="home-page">
@@ -49,8 +89,15 @@ export function HomeScreen() {
         </header>
 
         <ProjectTabs
-          activeProjectId={activeProject?.id ?? ''}
+          activeProjectId={activeProjectId}
+          onAddProject={() => setProjectDialogMode('add')}
+          onSelectProject={selectProject}
           projects={projects}
+        />
+        <ProjectActions
+          activeProject={activeProject}
+          onDeleteProject={() => setIsDeleteDialogOpen(true)}
+          onEditProject={() => setProjectDialogMode('edit')}
         />
 
         <ProgressCircle progress={progress} />
@@ -66,6 +113,21 @@ export function HomeScreen() {
         <div className="home-indicator" aria-hidden="true" />
 
         <SettingsDialog isOpen={false} />
+        <ProjectFormDialog
+          initialName={
+            projectDialogMode === 'edit' ? (activeProject?.name ?? '') : ''
+          }
+          isOpen={projectDialogMode !== null}
+          mode={projectDialogMode ?? 'add'}
+          onClose={closeProjectDialog}
+          onSubmit={handleProjectSubmit}
+        />
+        <ProjectDeleteDialog
+          isOpen={isDeleteDialogOpen}
+          onClose={closeDeleteDialog}
+          onConfirm={handleDeleteProject}
+          project={activeProject}
+        />
       </section>
     </main>
   );

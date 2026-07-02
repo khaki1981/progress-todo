@@ -32,6 +32,7 @@ body {
 }
 
 button {
+  color: inherit;
   font: inherit;
 }
 
@@ -209,12 +210,17 @@ button {
   border: 0;
   border-radius: 8px;
   color: var(--fg);
+  cursor: pointer;
   display: flex;
   flex: 0 0 auto;
   font-size: 12px;
   font-weight: 800;
+  max-width: 154px;
   min-height: 34px;
+  overflow: hidden;
   padding: 8px 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .project-tabs__tab[data-active='true'] {
@@ -230,6 +236,51 @@ button {
   line-height: 1;
   padding: 7px 0 9px;
   width: 34px;
+}
+
+.project-actions {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 13px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin: -13px 0 19px;
+  min-height: 40px;
+  padding: 7px 8px 7px 12px;
+}
+
+.project-actions__name {
+  color: var(--fg);
+  font-size: 12px;
+  font-weight: 800;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-actions__buttons {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.project-actions__buttons button {
+  background: var(--card-strong);
+  border: 0;
+  border-radius: 8px;
+  color: var(--fg);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+  min-height: 28px;
+  padding: 5px 9px;
+}
+
+.project-actions__buttons button:last-child {
+  background: rgba(243, 154, 107, 0.18);
+  color: #b65d37;
 }
 
 .progress {
@@ -446,6 +497,103 @@ button {
   border-radius: 14px;
 }
 
+.modal-backdrop {
+  align-items: center;
+  background: rgba(27, 24, 19, 0.24);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 22px;
+  position: absolute;
+  z-index: 10;
+}
+
+.project-dialog {
+  background: var(--screen);
+  border: 1px solid rgba(238, 230, 210, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px -30px rgba(27, 24, 19, 0.65),
+    0 6px 18px -12px rgba(27, 24, 19, 0.45);
+  color: var(--fg);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  width: min(100%, 258px);
+}
+
+.project-dialog h2 {
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.project-dialog p {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.project-dialog label {
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  font-weight: 800;
+  gap: 6px;
+}
+
+.project-dialog input {
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--fg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  min-height: 44px;
+  outline: none;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.project-dialog input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 214, 75, 0.28);
+}
+
+.project-dialog__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.project-dialog__actions button {
+  background: rgba(255, 255, 255, 0.56);
+  border: 0;
+  border-radius: 10px;
+  color: var(--fg);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  min-height: 36px;
+  padding: 8px 11px;
+}
+
+.project-dialog__actions button:last-child {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+.project-dialog__actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --page-bg: #101010;
@@ -477,9 +625,21 @@ button {
   }
 
   .project-tabs__tab,
+  .project-actions,
   .todo-list__empty,
   .todo-item {
     background: rgba(255, 255, 255, 0.045);
+  }
+
+  .project-actions__buttons button,
+  .project-dialog input,
+  .project-dialog__actions button {
+    background: rgba(255, 255, 255, 0.075);
+  }
+
+  .project-actions__buttons button:last-child {
+    background: rgba(243, 154, 107, 0.14);
+    color: #ffb08c;
   }
 
   .progress__message {
@@ -489,6 +649,14 @@ button {
 
   .home-indicator {
     background: rgba(255, 247, 223, 0.24);
+  }
+
+  .modal-backdrop {
+    background: rgba(0, 0, 0, 0.54);
+  }
+
+  .project-dialog {
+    border-color: rgba(255, 255, 255, 0.08);
   }
 }
 

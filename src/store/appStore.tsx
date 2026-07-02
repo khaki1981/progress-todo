@@ -14,6 +14,27 @@ import { calculateProgress, type ProgressSummary } from '../utils/progress';
 export type AppAction = {
   type: 'replaceState';
   payload: AppData;
+} | {
+  type: 'addProject';
+  payload: {
+    name: string;
+  };
+} | {
+  type: 'renameProject';
+  payload: {
+    projectId: string;
+    name: string;
+  };
+} | {
+  type: 'deleteProject';
+  payload: {
+    projectId: string;
+  };
+} | {
+  type: 'setActiveProject';
+  payload: {
+    projectId: string;
+  };
 };
 
 export type AppStoreValue = {
@@ -30,10 +51,93 @@ type AppStoreProviderProps = {
 
 const AppStoreContext = createContext<AppStoreValue | null>(null);
 
+const createId = () => {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+};
+
 const appReducer = (state: AppData, action: AppAction): AppData => {
   switch (action.type) {
     case 'replaceState':
       return action.payload;
+    case 'addProject': {
+      const name = action.payload.name.trim();
+
+      if (!name) {
+        return state;
+      }
+
+      const project: Project = {
+        id: createId(),
+        name,
+        order:
+          state.projects.reduce(
+            (maxOrder, currentProject) =>
+              Math.max(maxOrder, currentProject.order),
+            -1,
+          ) + 1,
+        createdAt: new Date().toISOString(),
+        todos: [],
+      };
+
+      return {
+        ...state,
+        activeProjectId: project.id,
+        projects: [...state.projects, project],
+      };
+    }
+    case 'renameProject': {
+      const name = action.payload.name.trim();
+
+      if (!name) {
+        return state;
+      }
+
+      return {
+        ...state,
+        projects: state.projects.map((project) =>
+          project.id === action.payload.projectId
+            ? {
+                ...project,
+                name,
+              }
+            : project,
+        ),
+      };
+    }
+    case 'deleteProject': {
+      const projects = state.projects.filter(
+        (project) => project.id !== action.payload.projectId,
+      );
+      const activeProjectId =
+        state.activeProjectId === action.payload.projectId
+          ? (projects[0]?.id ?? '')
+          : state.activeProjectId;
+
+      return {
+        ...state,
+        activeProjectId,
+        projects,
+      };
+    }
+    case 'setActiveProject': {
+      const projectId = action.payload.projectId;
+      const projectExists =
+        projectId === '' ||
+        state.projects.some((project) => project.id === projectId);
+
+      if (!projectExists) {
+        return state;
+      }
+
+      return {
+        ...state,
+        activeProjectId: projectId,
+      };
+    }
     default:
       return state;
   }
