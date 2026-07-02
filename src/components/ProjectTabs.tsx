@@ -6,16 +6,14 @@ type ProjectTabsProps = {
 };
 
 export function ProjectTabs({ projects, activeProjectId }: ProjectTabsProps) {
-  if (projects.length === 0) {
-    return (
-      <nav className="project-tabs" aria-label="Projects">
-        <span className="project-tabs__empty">No projects</span>
-      </nav>
-    );
-  }
-
   return (
     <nav className="project-tabs" aria-label="Projects">
+      <span
+        className="project-tabs__tab"
+        data-active={activeProjectId === ''}
+      >
+        すべて
+      </span>
       {projects.map((project) => (
         <span
           className="project-tabs__tab"
@@ -25,6 +23,9 @@ export function ProjectTabs({ projects, activeProjectId }: ProjectTabsProps) {
           {project.name}
         </span>
       ))}
+      <span className="project-tabs__add" aria-hidden="true">
+        +
+      </span>
     </nav>
   );
 }
