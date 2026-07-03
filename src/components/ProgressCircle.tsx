@@ -1,10 +1,11 @@
 import type { ProgressSummary } from '../utils/progress';
 
 type ProgressCircleProps = {
+  onAddTodo: () => void;
   progress: ProgressSummary;
 };
 
-export function ProgressCircle({ progress }: ProgressCircleProps) {
+export function ProgressCircle({ onAddTodo, progress }: ProgressCircleProps) {
   const radius = 63;
   const strokeWidth = 14;
   const circumference = 2 * Math.PI * radius;
@@ -55,7 +56,17 @@ export function ProgressCircle({ progress }: ProgressCircleProps) {
           </small>
         </div>
       </div>
-      <p className="progress__message">{message}</p>
+      {progress.totalCount === 0 ? (
+        <button
+          className="progress__message"
+          onClick={onAddTodo}
+          type="button"
+        >
+          {message}
+        </button>
+      ) : (
+        <p className="progress__message">{message}</p>
+      )}
     </section>
   );
 }

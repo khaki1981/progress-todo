@@ -31,6 +31,12 @@ export type AppAction = {
     projectId: string;
   };
 } | {
+  type: 'addTodo';
+  payload: {
+    projectId: string;
+    title: string;
+  };
+} | {
   type: 'setActiveProject';
   payload: {
     projectId: string;
@@ -121,6 +127,36 @@ const appReducer = (state: AppData, action: AppAction): AppData => {
         ...state,
         activeProjectId,
         projects,
+      };
+    }
+    case 'addTodo': {
+      const title = action.payload.title.trim();
+
+      if (!title) {
+        return state;
+      }
+
+      return {
+        ...state,
+        projects: state.projects.map((project) => {
+          if (project.id !== action.payload.projectId) {
+            return project;
+          }
+
+          return {
+            ...project,
+            todos: [
+              ...project.todos,
+              {
+                id: createId(),
+                title,
+                completed: false,
+                color: '#69bf86',
+                order: project.todos.length,
+              },
+            ],
+          };
+        }),
       };
     }
     case 'setActiveProject': {

@@ -324,12 +324,22 @@ button {
 
 .progress__message {
   background: rgba(255, 214, 75, 0.24);
+  border: 0;
   border-radius: 999px;
   color: var(--fg);
+  cursor: default;
   font-size: 11px;
   font-weight: 800;
   margin: 8px 0 0;
   padding: 6px 11px;
+}
+
+button.progress__message {
+  cursor: pointer;
+}
+
+button.progress__message:active {
+  transform: scale(0.97);
 }
 
 .todo-list {
@@ -447,7 +457,7 @@ button {
   box-shadow: 0 12px 26px -12px rgba(196, 147, 0, 0.8),
     0 4px 12px -8px rgba(27, 24, 19, 0.45);
   color: var(--accent-fg);
-  cursor: default;
+  cursor: pointer;
   display: flex;
   font-size: 27px;
   font-weight: 500;
@@ -458,6 +468,10 @@ button {
   position: absolute;
   right: 22px;
   width: 52px;
+}
+
+.add-fab:active {
+  transform: scale(0.96);
 }
 
 .settings-dialog {
@@ -532,6 +546,15 @@ button {
 .project-dialog input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(255, 214, 75, 0.28);
+}
+
+.project-dialog input:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.todo-dialog {
+  width: min(100%, 270px);
 }
 
 .project-dialog__actions {

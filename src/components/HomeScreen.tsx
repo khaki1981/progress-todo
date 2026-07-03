@@ -7,6 +7,7 @@ import { ProjectDeleteDialog } from './ProjectDeleteDialog';
 import { ProjectFormDialog } from './ProjectFormDialog';
 import { ProjectTabs } from './ProjectTabs';
 import { SettingsDialog } from './SettingsDialog';
+import { TodoFormDialog } from './TodoFormDialog';
 import { TodoList } from './TodoList';
 
 const formatToday = () => {
@@ -26,6 +27,7 @@ export function HomeScreen() {
     activeProject,
     activeProjectId,
     addProject,
+    addTodo,
     deleteProject,
     projects,
     renameProject,
@@ -35,8 +37,10 @@ export function HomeScreen() {
     'add' | 'edit' | null
   >(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isTodoDialogOpen, setIsTodoDialogOpen] = useState(false);
   const closeProjectDialog = () => setProjectDialogMode(null);
   const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
+  const closeTodoDialog = () => setIsTodoDialogOpen(false);
 
   const handleProjectSubmit = (name: string) => {
     if (projectDialogMode === 'add') {
@@ -56,6 +60,14 @@ export function HomeScreen() {
     }
 
     closeDeleteDialog();
+  };
+
+  const handleTodoSubmit = (title: string) => {
+    if (activeProject) {
+      addTodo(activeProject.id, title);
+    }
+
+    closeTodoDialog();
   };
 
   return (
@@ -85,13 +97,21 @@ export function HomeScreen() {
           onEditProject={() => setProjectDialogMode('edit')}
         />
 
-        <ProgressCircle progress={progress} />
+        <ProgressCircle
+          onAddTodo={() => setIsTodoDialogOpen(true)}
+          progress={progress}
+        />
         <TodoList
           projectName={activeProject?.name ?? 'Progress Todo'}
           todos={activeProject?.todos ?? []}
         />
 
-        <button className="add-fab" type="button" aria-label="Add todo">
+        <button
+          className="add-fab"
+          type="button"
+          aria-label="Todoを追加"
+          onClick={() => setIsTodoDialogOpen(true)}
+        >
           +
         </button>
 
@@ -109,6 +129,12 @@ export function HomeScreen() {
           isOpen={isDeleteDialogOpen}
           onClose={closeDeleteDialog}
           onConfirm={handleDeleteProject}
+          project={activeProject}
+        />
+        <TodoFormDialog
+          isOpen={isTodoDialogOpen}
+          onClose={closeTodoDialog}
+          onSubmit={handleTodoSubmit}
           project={activeProject}
         />
       </section>
