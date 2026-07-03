@@ -161,48 +161,105 @@ button {
 }
 
 .project-actions {
-  align-items: center;
-  background: rgba(255, 255, 255, 0.45);
-  border-radius: 13px;
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  margin: -13px 0 19px;
-  min-height: 40px;
-  padding: 7px 8px 7px 12px;
+  height: 0;
+  position: relative;
+  z-index: 2;
 }
 
-.project-actions__name {
+.project-actions__trigger {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(238, 230, 210, 0.84);
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  font-size: 20px;
+  font-weight: 900;
+  height: 44px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0 0 5px;
+  position: absolute;
+  right: 0;
+  top: 5px;
+  width: 44px;
+}
+
+.project-actions__trigger:active {
+  transform: scale(0.96);
+}
+
+.project-action-sheet-backdrop {
+  align-items: flex-end;
+  background: rgba(27, 24, 19, 0.24);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 0 12px 14px;
+  position: absolute;
+  z-index: 20;
+}
+
+.project-action-sheet {
+  background: var(--screen);
+  border: 1px solid rgba(238, 230, 210, 0.9);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px -30px rgba(27, 24, 19, 0.7),
+    0 6px 18px -12px rgba(27, 24, 19, 0.5);
   color: var(--fg);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  width: 100%;
+}
+
+.project-action-sheet__header {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+  padding: 4px 2px 12px;
+}
+
+.project-action-sheet h2 {
+  color: var(--fg);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.project-action-sheet p {
+  color: var(--muted);
   font-size: 12px;
   font-weight: 800;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.35;
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
 }
 
-.project-actions__buttons {
-  display: flex;
-  flex: 0 0 auto;
-  gap: 6px;
-}
-
-.project-actions__buttons button {
-  background: var(--card-strong);
+.project-action-sheet button {
+  background: rgba(255, 255, 255, 0.56);
   border: 0;
-  border-radius: 8px;
+  border-radius: 12px;
   color: var(--fg);
   cursor: pointer;
-  font-size: 11px;
-  font-weight: 800;
-  min-height: 28px;
-  padding: 5px 9px;
+  font-size: 14px;
+  font-weight: 900;
+  min-height: 46px;
+  padding: 12px 14px;
+  text-align: left;
 }
 
-.project-actions__buttons button:last-child {
+.project-action-sheet button.project-action-sheet__danger {
   background: rgba(243, 154, 107, 0.18);
   color: #b65d37;
+}
+
+.project-action-sheet button.project-action-sheet__cancel {
+  color: var(--muted);
+  margin-top: 4px;
+  text-align: center;
 }
 
 .progress {
@@ -500,6 +557,11 @@ button {
   color: var(--accent-fg);
 }
 
+.project-dialog__actions button.project-dialog__danger {
+  background: rgba(243, 154, 107, 0.2);
+  color: #a94f2c;
+}
+
 .project-dialog__actions button:disabled {
   cursor: not-allowed;
   opacity: 0.45;
@@ -536,19 +598,26 @@ button {
   }
 
   .project-tabs__tab,
-  .project-actions,
   .todo-list__empty,
   .todo-item {
     background: rgba(255, 255, 255, 0.045);
   }
 
-  .project-actions__buttons button,
+  .project-actions__trigger,
+  .project-action-sheet button,
   .project-dialog input,
   .project-dialog__actions button {
     background: rgba(255, 255, 255, 0.075);
   }
 
-  .project-actions__buttons button:last-child {
+  .project-actions__trigger,
+  .project-action-sheet,
+  .project-dialog {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .project-action-sheet button.project-action-sheet__danger,
+  .project-dialog__actions button.project-dialog__danger {
     background: rgba(243, 154, 107, 0.14);
     color: #ffb08c;
   }
@@ -562,8 +631,8 @@ button {
     background: rgba(0, 0, 0, 0.54);
   }
 
-  .project-dialog {
-    border-color: rgba(255, 255, 255, 0.08);
+  .project-action-sheet-backdrop {
+    background: rgba(0, 0, 0, 0.54);
   }
 }
 
