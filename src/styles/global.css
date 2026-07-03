@@ -213,15 +213,15 @@ button {
 }
 
 .progress__ring {
-  height: 150px;
+  height: 176px;
   position: relative;
-  width: 150px;
+  width: 176px;
 }
 
 .progress__chart {
   display: block;
-  height: 150px;
-  width: 150px;
+  height: 176px;
+  width: 176px;
 }
 
 .progress__track {
@@ -246,14 +246,14 @@ button {
 
 .progress__label strong {
   color: var(--fg);
-  font-size: 31px;
+  font-size: 42px;
   font-weight: 900;
   line-height: 1;
 }
 
 .progress__label strong span {
   color: var(--accent-strong);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 900;
   margin-left: 1px;
 }
@@ -271,7 +271,7 @@ button {
   color: var(--fg);
   font-size: 11px;
   font-weight: 800;
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   padding: 6px 11px;
 }
 
