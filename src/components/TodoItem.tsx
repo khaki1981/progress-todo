@@ -1,12 +1,18 @@
 import type { Todo } from '../types/app';
 
 type TodoItemProps = {
+  onOpenActions: () => void;
   onToggle: () => void;
   projectName: string;
   todo: Todo;
 };
 
-export function TodoItem({ onToggle, projectName, todo }: TodoItemProps) {
+export function TodoItem({
+  onOpenActions,
+  onToggle,
+  projectName,
+  todo,
+}: TodoItemProps) {
   return (
     <li className="todo-item" data-completed={todo.completed}>
       <button
@@ -27,6 +33,14 @@ export function TodoItem({ onToggle, projectName, todo }: TodoItemProps) {
           style={{ backgroundColor: todo.color }}
           aria-hidden="true"
         />
+      </button>
+      <button
+        aria-label={`${todo.title}の操作を開く`}
+        className="todo-item__menu"
+        onClick={onOpenActions}
+        type="button"
+      >
+        ⋯
       </button>
     </li>
   );

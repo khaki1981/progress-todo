@@ -43,6 +43,19 @@ export type AppAction = {
     todoId: string;
   };
 } | {
+  type: 'renameTodo';
+  payload: {
+    projectId: string;
+    todoId: string;
+    title: string;
+  };
+} | {
+  type: 'deleteTodo';
+  payload: {
+    projectId: string;
+    todoId: string;
+  };
+} | {
   type: 'setActiveProject';
   payload: {
     projectId: string;
@@ -184,6 +197,74 @@ const appReducer = (state: AppData, action: AppAction): AppData => {
             completed: !todo.completed,
           };
         });
+
+        return didUpdate
+          ? {
+              ...project,
+              todos,
+            }
+          : project;
+      });
+
+      return didUpdate
+        ? {
+            ...state,
+            projects,
+          }
+        : state;
+    }
+    case 'renameTodo': {
+      const title = action.payload.title.trim();
+
+      if (!title) {
+        return state;
+      }
+
+      let didUpdate = false;
+      const projects = state.projects.map((project) => {
+        if (project.id !== action.payload.projectId) {
+          return project;
+        }
+
+        const todos = project.todos.map((todo) => {
+          if (todo.id !== action.payload.todoId) {
+            return todo;
+          }
+
+          didUpdate = true;
+
+          return {
+            ...todo,
+            title,
+          };
+        });
+
+        return didUpdate
+          ? {
+              ...project,
+              todos,
+            }
+          : project;
+      });
+
+      return didUpdate
+        ? {
+            ...state,
+            projects,
+          }
+        : state;
+    }
+    case 'deleteTodo': {
+      let didUpdate = false;
+      const projects = state.projects.map((project) => {
+        if (project.id !== action.payload.projectId) {
+          return project;
+        }
+
+        const todos = project.todos.filter(
+          (todo) => todo.id !== action.payload.todoId,
+        );
+        didUpdate = todos.length !== project.todos.length;
 
         return didUpdate
           ? {

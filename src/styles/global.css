@@ -378,21 +378,26 @@ button.progress__message:active {
 }
 
 .todo-item {
+  background: rgba(255, 255, 255, 0.56);
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
   list-style: none;
+  min-height: 58px;
+  overflow: hidden;
 }
 
 .todo-item__button {
   align-items: center;
-  background: rgba(255, 255, 255, 0.56);
+  background: transparent;
   border: 0;
-  border-radius: 14px;
   color: inherit;
   cursor: pointer;
   display: grid;
   gap: 11px;
   grid-template-columns: 22px minmax(0, 1fr) 6px;
   min-height: 58px;
-  padding: 11px 12px;
+  padding: 11px 8px 11px 12px;
   text-align: left;
   width: 100%;
 }
@@ -406,8 +411,33 @@ button.progress__message:active {
   outline-offset: 2px;
 }
 
-.todo-item[data-completed='true'] .todo-item__button {
+.todo-item[data-completed='true'] {
   background: rgba(255, 255, 255, 0.42);
+}
+
+.todo-item__menu {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  font-size: 18px;
+  font-weight: 900;
+  justify-content: center;
+  line-height: 1;
+  min-height: 58px;
+  padding: 0 0 5px;
+  width: 40px;
+}
+
+.todo-item__menu:active {
+  transform: scale(0.94);
+}
+
+.todo-item__menu:focus-visible {
+  outline: 3px solid rgba(255, 214, 75, 0.38);
+  outline-offset: -3px;
 }
 
 .todo-item__check {
@@ -644,11 +674,11 @@ button.progress__message:active {
 
   .project-tabs__tab,
   .todo-list__empty,
-  .todo-item__button {
+  .todo-item {
     background: rgba(255, 255, 255, 0.045);
   }
 
-  .todo-item[data-completed='true'] .todo-item__button {
+  .todo-item[data-completed='true'] {
     background: rgba(255, 255, 255, 0.032);
   }
 

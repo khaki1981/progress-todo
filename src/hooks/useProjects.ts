@@ -67,6 +67,33 @@ export const useProjects = () => {
     [dispatch],
   );
 
+  const renameTodo = useCallback(
+    (projectId: string, todoId: string, title: string) => {
+      dispatch({
+        type: 'renameTodo',
+        payload: {
+          projectId,
+          todoId,
+          title,
+        },
+      });
+    },
+    [dispatch],
+  );
+
+  const deleteTodo = useCallback(
+    (projectId: string, todoId: string) => {
+      dispatch({
+        type: 'deleteTodo',
+        payload: {
+          projectId,
+          todoId,
+        },
+      });
+    },
+    [dispatch],
+  );
+
   const selectProject = useCallback(
     (projectId: string) => {
       dispatch({
@@ -84,9 +111,11 @@ export const useProjects = () => {
     activeProjectId: state.activeProjectId,
     addProject,
     addTodo,
+    deleteTodo,
     deleteProject,
     projects: state.projects,
     renameProject,
+    renameTodo,
     selectProject,
     toggleTodo,
   };

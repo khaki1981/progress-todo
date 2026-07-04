@@ -9,10 +9,15 @@ export type TodoListItem = {
 
 type TodoListProps = {
   items: TodoListItem[];
+  onOpenTodoActions: (item: TodoListItem) => void;
   onToggleTodo: (projectId: string, todoId: string) => void;
 };
 
-export function TodoList({ items, onToggleTodo }: TodoListProps) {
+export function TodoList({
+  items,
+  onOpenTodoActions,
+  onToggleTodo,
+}: TodoListProps) {
   if (items.length === 0) {
     return (
       <section className="todo-list" aria-label="Todos">
@@ -29,6 +34,7 @@ export function TodoList({ items, onToggleTodo }: TodoListProps) {
         {items.map((item) => (
           <TodoItem
             key={item.todo.id}
+            onOpenActions={() => onOpenTodoActions(item)}
             onToggle={() => onToggleTodo(item.projectId, item.todo.id)}
             projectName={item.projectName}
             todo={item.todo}
