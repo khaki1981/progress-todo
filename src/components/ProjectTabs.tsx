@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import type { Project } from '../types/app';
+import { ALL_TAB_COLOR, getProjectColor } from '../utils/todoColors';
 
 type ProjectTabsProps = {
   projects: Project[];
@@ -7,6 +8,14 @@ type ProjectTabsProps = {
   onAddProject: () => void;
   onSelectProject: (projectId: string) => void;
 };
+
+type ProjectTabStyle = CSSProperties & {
+  '--project-tab-color': string;
+};
+
+const getProjectTabStyle = (color: string): ProjectTabStyle => ({
+  '--project-tab-color': color,
+});
 
 export function ProjectTabs({
   activeProjectId,
@@ -34,6 +43,7 @@ export function ProjectTabs({
         className="project-tabs__tab"
         data-active={activeProjectId === ''}
         onClick={() => onSelectProject('')}
+        style={getProjectTabStyle(ALL_TAB_COLOR)}
         type="button"
       >
         <span className="project-tabs__label">すべて</span>
@@ -45,6 +55,7 @@ export function ProjectTabs({
           data-active={project.id === activeProjectId}
           key={project.id}
           onClick={() => onSelectProject(project.id)}
+          style={getProjectTabStyle(getProjectColor(project.color))}
           title={project.name}
           type="button"
         >

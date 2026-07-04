@@ -129,7 +129,7 @@ button {
 .project-tabs__add {
   align-items: center;
   background: rgba(255, 255, 255, 0.55);
-  border: 0;
+  border: 1px solid transparent;
   border-radius: 8px;
   color: var(--fg);
   cursor: pointer;
@@ -144,8 +144,21 @@ button {
 }
 
 .project-tabs__tab {
+  --project-tab-color: var(--accent);
+  background: rgba(255, 255, 255, 0.62);
+  border-color: var(--project-tab-color);
+  gap: 6px;
   justify-content: center;
   max-width: 110px;
+}
+
+.project-tabs__tab::before {
+  background: var(--project-tab-color);
+  border-radius: 999px;
+  content: '';
+  flex: 0 0 auto;
+  height: 6px;
+  width: 6px;
 }
 
 .project-tabs__label {
@@ -157,8 +170,14 @@ button {
 }
 
 .project-tabs__tab[data-active='true'] {
-  background: var(--accent);
+  background: var(--project-tab-color);
+  border-color: var(--project-tab-color);
+  box-shadow: 0 8px 18px -14px rgba(27, 24, 19, 0.58);
   color: var(--accent-fg);
+}
+
+.project-tabs__tab[data-active='true']::before {
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .project-tabs__add {

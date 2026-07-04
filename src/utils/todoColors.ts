@@ -1,3 +1,5 @@
+export const ALL_TAB_COLOR = '#E8DDC5';
+
 export const PROJECT_COLORS = [
   '#F7C948',
   '#6FCF97',
