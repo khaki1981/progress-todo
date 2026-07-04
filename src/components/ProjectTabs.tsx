@@ -36,7 +36,7 @@ export function ProjectTabs({
         onClick={() => onSelectProject('')}
         type="button"
       >
-        すべて
+        <span className="project-tabs__label">すべて</span>
       </button>
       {projects.map((project) => (
         <button
@@ -48,7 +48,7 @@ export function ProjectTabs({
           title={project.name}
           type="button"
         >
-          {project.name}
+          <span className="project-tabs__label">{project.name}</span>
         </button>
       ))}
       <button

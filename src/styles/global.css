@@ -137,11 +137,21 @@ button {
   flex: 0 0 auto;
   font-size: 12px;
   font-weight: 800;
-  max-width: 154px;
   min-width: 0;
   min-height: 34px;
   overflow: hidden;
   padding: 8px 13px;
+}
+
+.project-tabs__tab {
+  justify-content: center;
+  max-width: 110px;
+}
+
+.project-tabs__label {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -155,8 +165,10 @@ button {
   background: var(--card-strong);
   color: var(--accent-fg);
   font-size: 17px;
+  flex-basis: 34px;
   justify-content: center;
   line-height: 1;
+  max-width: 34px;
   padding: 7px 0 9px;
   width: 34px;
 }
