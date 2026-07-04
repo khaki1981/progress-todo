@@ -10,6 +10,7 @@ import {
 import { localStorageService } from '../services/storage';
 import type { AppData, Project, StorageService } from '../types/app';
 import { calculateProgress, type ProgressSummary } from '../utils/progress';
+import { getNextTodoColor } from '../utils/todoColors';
 
 export type AppAction = {
   type: 'replaceState';
@@ -170,7 +171,7 @@ const appReducer = (state: AppData, action: AppAction): AppData => {
                 id: createId(),
                 title,
                 completed: false,
-                color: '#69bf86',
+                color: getNextTodoColor(project.todos.length),
                 order: project.todos.length,
               },
             ],

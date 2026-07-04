@@ -468,6 +468,7 @@ button.progress__message:active {
 
 .todo-item__check {
   align-items: center;
+  background: rgba(255, 255, 255, 0.36);
   border: 1.8px solid var(--line);
   border-radius: 7px;
   color: var(--accent-fg);
@@ -481,8 +482,7 @@ button.progress__message:active {
 }
 
 .todo-item[data-completed='true'] .todo-item__check {
-  background: var(--accent);
-  border-color: var(--accent);
+  color: var(--accent-fg);
 }
 
 .todo-item__body {

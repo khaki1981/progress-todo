@@ -1,4 +1,5 @@
 import type { AppData, Project, StorageService, Todo } from '../types/app';
+import { getTodoColor } from '../utils/todoColors';
 
 export const STORAGE_KEY = 'progress-todo-data';
 
@@ -8,37 +9,59 @@ export const createEmptyAppData = (): AppData => ({
   settings: {},
 });
 
-const isTodo = (value: unknown): value is Todo => {
+const normalizeTodo = (value: unknown): Todo | null => {
   if (!value || typeof value !== 'object') {
-    return false;
+    return null;
   }
 
-  const todo = value as Todo;
+  const todo = value as Partial<Todo>;
 
-  return (
-    typeof todo.id === 'string' &&
-    typeof todo.title === 'string' &&
-    typeof todo.completed === 'boolean' &&
-    typeof todo.color === 'string' &&
-    typeof todo.order === 'number'
-  );
+  if (
+    typeof todo.id !== 'string' ||
+    typeof todo.title !== 'string' ||
+    typeof todo.completed !== 'boolean' ||
+    typeof todo.order !== 'number'
+  ) {
+    return null;
+  }
+
+  return {
+    id: todo.id,
+    title: todo.title,
+    completed: todo.completed,
+    color: getTodoColor(todo.color),
+    order: todo.order,
+  };
 };
 
-const isProject = (value: unknown): value is Project => {
+const normalizeProject = (value: unknown): Project | null => {
   if (!value || typeof value !== 'object') {
-    return false;
+    return null;
   }
 
-  const project = value as Project;
+  const project = value as Partial<Project>;
 
-  return (
-    typeof project.id === 'string' &&
-    typeof project.name === 'string' &&
-    typeof project.order === 'number' &&
-    typeof project.createdAt === 'string' &&
-    Array.isArray(project.todos) &&
-    project.todos.every(isTodo)
-  );
+  if (
+    typeof project.id !== 'string' ||
+    typeof project.name !== 'string' ||
+    typeof project.order !== 'number' ||
+    typeof project.createdAt !== 'string' ||
+    !Array.isArray(project.todos)
+  ) {
+    return null;
+  }
+
+  return {
+    id: project.id,
+    name: project.name,
+    order: project.order,
+    createdAt: project.createdAt,
+    todos: project.todos.flatMap((todo) => {
+      const normalizedTodo = normalizeTodo(todo);
+
+      return normalizedTodo ? [normalizedTodo] : [];
+    }),
+  };
 };
 
 const normalizeAppData = (value: unknown): AppData => {
@@ -48,7 +71,11 @@ const normalizeAppData = (value: unknown): AppData => {
 
   const data = value as Partial<AppData>;
   const projects = Array.isArray(data.projects)
-    ? data.projects.filter(isProject)
+    ? data.projects.flatMap((project) => {
+        const normalizedProject = normalizeProject(project);
+
+        return normalizedProject ? [normalizedProject] : [];
+      })
     : [];
   const activeProjectId =
     typeof data.activeProjectId === 'string' ? data.activeProjectId : '';

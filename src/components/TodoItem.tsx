@@ -1,4 +1,5 @@
 import type { Todo } from '../types/app';
+import { getTodoColor } from '../utils/todoColors';
 
 type TodoItemProps = {
   onOpenActions: () => void;
@@ -11,6 +12,8 @@ export function TodoItem({
   onToggle,
   todo,
 }: TodoItemProps) {
+  const todoColor = getTodoColor(todo.color);
+
   return (
     <li className="todo-item" data-completed={todo.completed}>
       <button
@@ -19,7 +22,14 @@ export function TodoItem({
         onClick={onToggle}
         type="button"
       >
-        <span className="todo-item__check" aria-hidden="true">
+        <span
+          className="todo-item__check"
+          style={{
+            backgroundColor: todo.completed ? todoColor : undefined,
+            borderColor: todoColor,
+          }}
+          aria-hidden="true"
+        >
           {todo.completed ? '✓' : ''}
         </span>
         <span className="todo-item__body">
@@ -29,7 +39,7 @@ export function TodoItem({
         </span>
         <span
           className="todo-item__color"
-          style={{ backgroundColor: todo.color }}
+          style={{ backgroundColor: todoColor }}
           aria-hidden="true"
         />
       </button>
