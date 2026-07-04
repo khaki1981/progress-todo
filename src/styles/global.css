@@ -138,6 +138,7 @@ button {
   font-size: 12px;
   font-weight: 800;
   max-width: 154px;
+  min-width: 0;
   min-height: 34px;
   overflow: hidden;
   padding: 8px 13px;
@@ -267,8 +268,11 @@ button {
   color: var(--fg);
   font-size: 15px;
   line-height: 1.35;
-  overflow-wrap: anywhere;
+  min-width: 0;
+  overflow: hidden;
   text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .progress {
@@ -405,6 +409,7 @@ button.progress__message:active {
   display: grid;
   gap: 11px;
   grid-template-columns: 22px minmax(0, 1fr) 6px;
+  min-width: 0;
   min-height: 58px;
   padding: 11px 8px 11px 12px;
   text-align: left;
@@ -476,10 +481,14 @@ button.progress__message:active {
 
 .todo-item__title {
   color: var(--fg);
+  display: block;
   font-size: 13px;
   font-weight: 800;
   line-height: 1.28;
-  overflow-wrap: anywhere;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .todo-item[data-completed='true'] .todo-item__title {
@@ -501,6 +510,7 @@ button.progress__message:active {
 .todo-item__color {
   background: var(--success);
   border-radius: 999px;
+  min-width: 6px;
   height: 6px;
   width: 6px;
 }

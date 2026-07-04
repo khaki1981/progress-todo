@@ -25,7 +25,9 @@ export function TodoItem({
           {todo.completed ? '✓' : ''}
         </span>
         <span className="todo-item__body">
-          <span className="todo-item__title">{todo.title}</span>
+          <span className="todo-item__title" title={todo.title}>
+            {todo.title}
+          </span>
           <span className="todo-item__meta">{projectName}</span>
         </span>
         <span

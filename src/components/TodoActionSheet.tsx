@@ -34,6 +34,7 @@ export function TodoActionSheet({
           className="todo-action-sheet__title"
           type="button"
           onClick={onEditTodo}
+          title={item.todo.title}
         >
           {item.todo.title}
         </button>

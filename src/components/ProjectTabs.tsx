@@ -45,6 +45,7 @@ export function ProjectTabs({
           data-active={project.id === activeProjectId}
           key={project.id}
           onClick={() => onSelectProject(project.id)}
+          title={project.name}
           type="button"
         >
           {project.name}
