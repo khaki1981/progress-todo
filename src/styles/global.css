@@ -496,17 +496,6 @@ button.progress__message:active {
   text-decoration: line-through;
 }
 
-.todo-item__meta {
-  color: var(--muted-soft);
-  font-size: 10px;
-  font-weight: 800;
-  line-height: 1.2;
-  margin-top: 3px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .todo-item__color {
   background: var(--success);
   border-radius: 999px;

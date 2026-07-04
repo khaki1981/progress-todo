@@ -3,14 +3,12 @@ import type { Todo } from '../types/app';
 type TodoItemProps = {
   onOpenActions: () => void;
   onToggle: () => void;
-  projectName: string;
   todo: Todo;
 };
 
 export function TodoItem({
   onOpenActions,
   onToggle,
-  projectName,
   todo,
 }: TodoItemProps) {
   return (
@@ -28,7 +26,6 @@ export function TodoItem({
           <span className="todo-item__title" title={todo.title}>
             {todo.title}
           </span>
-          <span className="todo-item__meta">{projectName}</span>
         </span>
         <span
           className="todo-item__color"

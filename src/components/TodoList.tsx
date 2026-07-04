@@ -36,7 +36,6 @@ export function TodoList({
             key={item.todo.id}
             onOpenActions={() => onOpenTodoActions(item)}
             onToggle={() => onToggleTodo(item.projectId, item.todo.id)}
-            projectName={item.projectName}
             todo={item.todo}
           />
         ))}
