@@ -41,6 +41,18 @@ export function HomeScreen() {
   const closeProjectDialog = () => setProjectDialogMode(null);
   const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
   const closeTodoDialog = () => setIsTodoDialogOpen(false);
+  const todoTargetProject = activeProject ?? projects[0] ?? null;
+  const todoListItems = activeProject
+    ? activeProject.todos.map((todo) => ({
+        projectName: activeProject.name,
+        todo,
+      }))
+    : projects.flatMap((project) =>
+        project.todos.map((todo) => ({
+          projectName: project.name,
+          todo,
+        })),
+      );
 
   const handleProjectSubmit = (name: string) => {
     if (projectDialogMode === 'add') {
@@ -63,8 +75,8 @@ export function HomeScreen() {
   };
 
   const handleTodoSubmit = (title: string) => {
-    if (activeProject) {
-      addTodo(activeProject.id, title);
+    if (todoTargetProject) {
+      addTodo(todoTargetProject.id, title);
     }
 
     closeTodoDialog();
@@ -101,10 +113,7 @@ export function HomeScreen() {
           onAddTodo={() => setIsTodoDialogOpen(true)}
           progress={progress}
         />
-        <TodoList
-          projectName={activeProject?.name ?? 'Progress Todo'}
-          todos={activeProject?.todos ?? []}
-        />
+        <TodoList items={todoListItems} />
 
         <button
           className="add-fab"
@@ -135,7 +144,7 @@ export function HomeScreen() {
           isOpen={isTodoDialogOpen}
           onClose={closeTodoDialog}
           onSubmit={handleTodoSubmit}
-          project={activeProject}
+          project={todoTargetProject}
         />
       </section>
     </main>
