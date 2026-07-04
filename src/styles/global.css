@@ -262,6 +262,15 @@ button {
   text-align: center;
 }
 
+.todo-action-sheet button.todo-action-sheet__title {
+  background: rgba(255, 214, 75, 0.22);
+  color: var(--fg);
+  font-size: 15px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
 .progress {
   align-items: center;
   display: flex;

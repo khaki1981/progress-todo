@@ -24,18 +24,18 @@ export function TodoActionSheet({
       role="presentation"
     >
       <div
-        aria-label="タスク操作"
+        aria-label="タスクメニュー"
         aria-modal="true"
-        className="project-action-sheet"
+        className="project-action-sheet todo-action-sheet"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
       >
-        <div className="project-action-sheet__header">
-          <h2>タスク操作</h2>
-          <p>{item.todo.title}</p>
-        </div>
-        <button type="button" onClick={onEditTodo}>
-          名前を編集
+        <button
+          className="todo-action-sheet__title"
+          type="button"
+          onClick={onEditTodo}
+        >
+          {item.todo.title}
         </button>
         <button
           className="project-action-sheet__danger"
