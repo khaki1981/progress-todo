@@ -2,15 +2,17 @@ import type { Todo } from '../types/app';
 import { TodoItem } from './TodoItem';
 
 export type TodoListItem = {
+  projectId: string;
   projectName: string;
   todo: Todo;
 };
 
 type TodoListProps = {
   items: TodoListItem[];
+  onToggleTodo: (projectId: string, todoId: string) => void;
 };
 
-export function TodoList({ items }: TodoListProps) {
+export function TodoList({ items, onToggleTodo }: TodoListProps) {
   if (items.length === 0) {
     return (
       <section className="todo-list" aria-label="Todos">
@@ -27,6 +29,7 @@ export function TodoList({ items }: TodoListProps) {
         {items.map((item) => (
           <TodoItem
             key={item.todo.id}
+            onToggle={() => onToggleTodo(item.projectId, item.todo.id)}
             projectName={item.projectName}
             todo={item.todo}
           />

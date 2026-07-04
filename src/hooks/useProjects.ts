@@ -54,6 +54,19 @@ export const useProjects = () => {
     [dispatch],
   );
 
+  const toggleTodo = useCallback(
+    (projectId: string, todoId: string) => {
+      dispatch({
+        type: 'toggleTodo',
+        payload: {
+          projectId,
+          todoId,
+        },
+      });
+    },
+    [dispatch],
+  );
+
   const selectProject = useCallback(
     (projectId: string) => {
       dispatch({
@@ -75,5 +88,6 @@ export const useProjects = () => {
     projects: state.projects,
     renameProject,
     selectProject,
+    toggleTodo,
   };
 };

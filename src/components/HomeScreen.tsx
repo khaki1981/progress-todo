@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAppState } from '../hooks/useAppState';
 import { useProjects } from '../hooks/useProjects';
+import { calculateTodoProgress } from '../utils/progress';
 import { ProgressCircle } from './ProgressCircle';
 import { ProjectActions } from './ProjectActions';
 import { ProjectDeleteDialog } from './ProjectDeleteDialog';
@@ -22,7 +22,6 @@ const formatToday = () => {
 };
 
 export function HomeScreen() {
-  const { progress } = useAppState();
   const {
     activeProject,
     activeProjectId,
@@ -32,6 +31,7 @@ export function HomeScreen() {
     projects,
     renameProject,
     selectProject,
+    toggleTodo,
   } = useProjects();
   const [projectDialogMode, setProjectDialogMode] = useState<
     'add' | 'edit' | null
@@ -44,15 +44,20 @@ export function HomeScreen() {
   const todoTargetProject = activeProject ?? projects[0] ?? null;
   const todoListItems = activeProject
     ? activeProject.todos.map((todo) => ({
+        projectId: activeProject.id,
         projectName: activeProject.name,
         todo,
       }))
     : projects.flatMap((project) =>
         project.todos.map((todo) => ({
+          projectId: project.id,
           projectName: project.name,
           todo,
         })),
       );
+  const progress = calculateTodoProgress(
+    todoListItems.map((item) => item.todo),
+  );
 
   const handleProjectSubmit = (name: string) => {
     if (projectDialogMode === 'add') {
@@ -113,7 +118,7 @@ export function HomeScreen() {
           onAddTodo={() => setIsTodoDialogOpen(true)}
           progress={progress}
         />
-        <TodoList items={todoListItems} />
+        <TodoList items={todoListItems} onToggleTodo={toggleTodo} />
 
         <button
           className="add-fab"

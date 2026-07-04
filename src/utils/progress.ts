@@ -1,4 +1,4 @@
-import type { Project } from '../types/app';
+import type { Project, Todo } from '../types/app';
 
 export type ProgressSummary = {
   totalCount: number;
@@ -6,8 +6,8 @@ export type ProgressSummary = {
   percentage: number;
 };
 
-export const calculateProgress = (project: Project | null): ProgressSummary => {
-  if (!project || project.todos.length === 0) {
+export const calculateTodoProgress = (todos: Todo[]): ProgressSummary => {
+  if (todos.length === 0) {
     return {
       totalCount: 0,
       completedCount: 0,
@@ -15,11 +15,14 @@ export const calculateProgress = (project: Project | null): ProgressSummary => {
     };
   }
 
-  const completedCount = project.todos.filter((todo) => todo.completed).length;
+  const completedCount = todos.filter((todo) => todo.completed).length;
 
   return {
-    totalCount: project.todos.length,
+    totalCount: todos.length,
     completedCount,
-    percentage: Math.round((completedCount / project.todos.length) * 100),
+    percentage: Math.round((completedCount / todos.length) * 100),
   };
 };
+
+export const calculateProgress = (project: Project | null): ProgressSummary =>
+  calculateTodoProgress(project?.todos ?? []);

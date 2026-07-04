@@ -378,14 +378,36 @@ button.progress__message:active {
 }
 
 .todo-item {
+  list-style: none;
+}
+
+.todo-item__button {
   align-items: center;
   background: rgba(255, 255, 255, 0.56);
+  border: 0;
   border-radius: 14px;
+  color: inherit;
+  cursor: pointer;
   display: grid;
   gap: 11px;
   grid-template-columns: 22px minmax(0, 1fr) 6px;
   min-height: 58px;
   padding: 11px 12px;
+  text-align: left;
+  width: 100%;
+}
+
+.todo-item__button:active {
+  transform: scale(0.985);
+}
+
+.todo-item__button:focus-visible {
+  outline: 3px solid rgba(255, 214, 75, 0.38);
+  outline-offset: 2px;
+}
+
+.todo-item[data-completed='true'] .todo-item__button {
+  background: rgba(255, 255, 255, 0.42);
 }
 
 .todo-item__check {
@@ -622,8 +644,12 @@ button.progress__message:active {
 
   .project-tabs__tab,
   .todo-list__empty,
-  .todo-item {
+  .todo-item__button {
     background: rgba(255, 255, 255, 0.045);
+  }
+
+  .todo-item[data-completed='true'] .todo-item__button {
+    background: rgba(255, 255, 255, 0.032);
   }
 
   .project-actions__trigger,
