@@ -1,11 +1,16 @@
 import type { ProgressSummary } from '../utils/progress';
 
 type ProgressCircleProps = {
+  color?: string;
   onAddTodo: () => void;
   progress: ProgressSummary;
 };
 
-export function ProgressCircle({ onAddTodo, progress }: ProgressCircleProps) {
+export function ProgressCircle({
+  color,
+  onAddTodo,
+  progress,
+}: ProgressCircleProps) {
   const radius = 63;
   const strokeWidth = 14;
   const circumference = 2 * Math.PI * radius;
@@ -44,6 +49,7 @@ export function ProgressCircle({ onAddTodo, progress }: ProgressCircleProps) {
             strokeDashoffset={progressOffset}
             strokeLinecap="round"
             strokeWidth={strokeWidth}
+            style={color ? { stroke: color } : undefined}
           />
         </svg>
         <div className="progress__label">

@@ -60,12 +60,14 @@ export function HomeScreen() {
   const todoListItems = activeProject
     ? activeProject.todos.map((todo) => ({
         projectId: activeProject.id,
+        projectColor: activeProject.color,
         projectName: activeProject.name,
         todo,
       }))
     : projects.flatMap((project) =>
         project.todos.map((todo) => ({
           projectId: project.id,
+          projectColor: project.color,
           projectName: project.name,
           todo,
         })),
@@ -162,6 +164,7 @@ export function HomeScreen() {
         />
 
         <ProgressCircle
+          color={activeProject?.color}
           onAddTodo={() => setIsTodoDialogOpen(true)}
           progress={progress}
         />

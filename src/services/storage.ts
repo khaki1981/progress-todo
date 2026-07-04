@@ -1,5 +1,5 @@
 import type { AppData, Project, StorageService, Todo } from '../types/app';
-import { getTodoColor } from '../utils/todoColors';
+import { getNextProjectColor, getProjectColor } from '../utils/todoColors';
 
 export const STORAGE_KEY = 'progress-todo-data';
 
@@ -9,7 +9,7 @@ export const createEmptyAppData = (): AppData => ({
   settings: {},
 });
 
-const normalizeTodo = (value: unknown): Todo | null => {
+const normalizeTodo = (value: unknown, projectColor: string): Todo | null => {
   if (!value || typeof value !== 'object') {
     return null;
   }
@@ -29,12 +29,14 @@ const normalizeTodo = (value: unknown): Todo | null => {
     id: todo.id,
     title: todo.title,
     completed: todo.completed,
-    color: getTodoColor(todo.color),
+    color: typeof todo.color === 'string' && todo.color.trim()
+      ? todo.color
+      : projectColor,
     order: todo.order,
   };
 };
 
-const normalizeProject = (value: unknown): Project | null => {
+const normalizeProject = (value: unknown, index: number): Project | null => {
   if (!value || typeof value !== 'object') {
     return null;
   }
@@ -51,13 +53,16 @@ const normalizeProject = (value: unknown): Project | null => {
     return null;
   }
 
+  const color = getProjectColor(project.color ?? getNextProjectColor(index));
+
   return {
     id: project.id,
     name: project.name,
     order: project.order,
     createdAt: project.createdAt,
+    color,
     todos: project.todos.flatMap((todo) => {
-      const normalizedTodo = normalizeTodo(todo);
+      const normalizedTodo = normalizeTodo(todo, color);
 
       return normalizedTodo ? [normalizedTodo] : [];
     }),
@@ -71,8 +76,8 @@ const normalizeAppData = (value: unknown): AppData => {
 
   const data = value as Partial<AppData>;
   const projects = Array.isArray(data.projects)
-    ? data.projects.flatMap((project) => {
-        const normalizedProject = normalizeProject(project);
+    ? data.projects.flatMap((project, index) => {
+        const normalizedProject = normalizeProject(project, index);
 
         return normalizedProject ? [normalizedProject] : [];
       })

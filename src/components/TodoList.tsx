@@ -3,6 +3,7 @@ import { TodoItem } from './TodoItem';
 
 export type TodoListItem = {
   projectId: string;
+  projectColor: string;
   projectName: string;
   todo: Todo;
 };
@@ -36,6 +37,7 @@ export function TodoList({
             key={item.todo.id}
             onOpenActions={() => onOpenTodoActions(item)}
             onToggle={() => onToggleTodo(item.projectId, item.todo.id)}
+            projectColor={item.projectColor}
             todo={item.todo}
           />
         ))}

@@ -11,6 +11,7 @@ export type Project = {
   name: string;
   order: number;
   createdAt: string;
+  color: string;
   todos: Todo[];
 };
 

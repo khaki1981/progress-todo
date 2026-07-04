@@ -1,16 +1,16 @@
-export const TODO_COLORS = [
+export const PROJECT_COLORS = [
   '#F7C948',
-  '#F29E4C',
   '#6FCF97',
+  '#F29E4C',
   '#56CCF2',
   '#BB6BD9',
   '#F299C1',
 ] as const;
 
-export const DEFAULT_TODO_COLOR = TODO_COLORS[0];
+export const DEFAULT_PROJECT_COLOR = PROJECT_COLORS[0];
 
-export const getTodoColor = (color: string | undefined): string =>
-  color?.trim() || DEFAULT_TODO_COLOR;
+export const getProjectColor = (color: string | undefined): string =>
+  color?.trim() || DEFAULT_PROJECT_COLOR;
 
-export const getNextTodoColor = (todoCount: number): string =>
-  TODO_COLORS[todoCount % TODO_COLORS.length];
+export const getNextProjectColor = (projectCount: number): string =>
+  PROJECT_COLORS[projectCount % PROJECT_COLORS.length];

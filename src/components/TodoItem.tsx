@@ -1,18 +1,20 @@
 import type { Todo } from '../types/app';
-import { getTodoColor } from '../utils/todoColors';
+import { getProjectColor } from '../utils/todoColors';
 
 type TodoItemProps = {
   onOpenActions: () => void;
   onToggle: () => void;
+  projectColor: string;
   todo: Todo;
 };
 
 export function TodoItem({
   onOpenActions,
   onToggle,
+  projectColor,
   todo,
 }: TodoItemProps) {
-  const todoColor = getTodoColor(todo.color);
+  const displayColor = getProjectColor(projectColor);
 
   return (
     <li className="todo-item" data-completed={todo.completed}>
@@ -25,8 +27,8 @@ export function TodoItem({
         <span
           className="todo-item__check"
           style={{
-            backgroundColor: todo.completed ? todoColor : undefined,
-            borderColor: todoColor,
+            backgroundColor: todo.completed ? displayColor : undefined,
+            borderColor: displayColor,
           }}
           aria-hidden="true"
         >
@@ -37,11 +39,6 @@ export function TodoItem({
             {todo.title}
           </span>
         </span>
-        <span
-          className="todo-item__color"
-          style={{ backgroundColor: todoColor }}
-          aria-hidden="true"
-        />
       </button>
       <button
         aria-label={`${todo.title}の操作を開く`}
