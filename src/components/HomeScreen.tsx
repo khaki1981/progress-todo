@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { useProjects } from '../hooks/useProjects';
 import { calculateTodoProgress } from '../utils/progress';
 import { ALL_TAB_COLOR, getProjectColorByIndex } from '../utils/todoColors';
@@ -13,6 +13,10 @@ import { TodoDeleteDialog } from './TodoDeleteDialog';
 import { TodoEditDialog } from './TodoEditDialog';
 import { TodoFormDialog } from './TodoFormDialog';
 import { TodoList, type TodoListItem } from './TodoList';
+
+type ProjectPanelStyle = CSSProperties & {
+  '--project-panel-color': string;
+};
 
 const formatToday = () => {
   const today = new Date();
@@ -89,6 +93,9 @@ export function HomeScreen() {
         color: getProjectColorByIndex(index),
         count: project.todos.filter((todo) => todo.completed).length,
       }));
+  const projectPanelStyle: ProjectPanelStyle = {
+    '--project-panel-color': activeProjectColor,
+  };
 
   const handleProjectSubmit = (name: string) => {
     if (projectDialogMode === 'add') {
@@ -171,32 +178,34 @@ export function HomeScreen() {
           onSelectProject={selectProject}
           projects={projects}
         />
-        <ProjectActions
-          activeProject={activeProject}
-          onDeleteProject={() => setIsDeleteDialogOpen(true)}
-          onEditProject={() => setProjectDialogMode('edit')}
-        />
+        <div className="project-panel" style={projectPanelStyle}>
+          <ProjectActions
+            activeProject={activeProject}
+            onDeleteProject={() => setIsDeleteDialogOpen(true)}
+            onEditProject={() => setProjectDialogMode('edit')}
+          />
 
-        <ProgressCircle
-          color={activeProjectColor}
-          onAddTodo={() => setIsTodoDialogOpen(true)}
-          progress={progress}
-          segments={progressSegments}
-        />
-        <TodoList
-          items={todoListItems}
-          onOpenTodoActions={setTodoActionItem}
-          onToggleTodo={toggleTodo}
-        />
+          <ProgressCircle
+            color={activeProjectColor}
+            onAddTodo={() => setIsTodoDialogOpen(true)}
+            progress={progress}
+            segments={progressSegments}
+          />
+          <TodoList
+            items={todoListItems}
+            onOpenTodoActions={setTodoActionItem}
+            onToggleTodo={toggleTodo}
+          />
 
-        <button
-          className="add-fab"
-          type="button"
-          aria-label="Todoを追加"
-          onClick={() => setIsTodoDialogOpen(true)}
-        >
-          +
-        </button>
+          <button
+            className="add-fab"
+            type="button"
+            aria-label="Todoを追加"
+            onClick={() => setIsTodoDialogOpen(true)}
+          >
+            +
+          </button>
+        </div>
 
         <SettingsDialog isOpen={false} />
         <ProjectFormDialog
