@@ -19,18 +19,22 @@ export const getNextProjectColor = (projectCount: number): string =>
 const normalizeColor = (color: string | undefined): string =>
   color?.trim().toLowerCase() ?? '';
 
-export const getProjectColor = (
-  color: string | undefined,
-  fallbackIndex = 0,
-): string => {
+export const getProjectColorByIndex = (projectIndex: number): string =>
+  getNextProjectColor(projectIndex);
+
+export const getProjectColor = (color: string | undefined): string => {
   const normalizedColor = color?.trim();
 
   if (
     normalizedColor &&
-    normalizeColor(normalizedColor) !== normalizeColor(ALL_TAB_COLOR)
+    normalizeColor(normalizedColor) !== normalizeColor(ALL_TAB_COLOR) &&
+    PROJECT_COLORS.some(
+      (projectColor) =>
+        normalizeColor(projectColor) === normalizeColor(normalizedColor),
+    )
   ) {
     return normalizedColor;
   }
 
-  return getNextProjectColor(fallbackIndex);
+  return DEFAULT_PROJECT_COLOR;
 };

@@ -1,6 +1,6 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
 import type { Project } from '../types/app';
-import { ALL_TAB_COLOR, getProjectColor } from '../utils/todoColors';
+import { ALL_TAB_COLOR, getProjectColorByIndex } from '../utils/todoColors';
 
 type ProjectTabsProps = {
   projects: Project[];
@@ -55,7 +55,7 @@ export function ProjectTabs({
           data-active={project.id === activeProjectId}
           key={project.id}
           onClick={() => onSelectProject(project.id)}
-          style={getProjectTabStyle(getProjectColor(project.color, index))}
+          style={getProjectTabStyle(getProjectColorByIndex(index))}
           title={project.name}
           type="button"
         >

@@ -1,5 +1,5 @@
 import type { AppData, Project, StorageService, Todo } from '../types/app';
-import { getProjectColor } from '../utils/todoColors';
+import { getProjectColorByIndex } from '../utils/todoColors';
 
 export const STORAGE_KEY = 'progress-todo-data';
 
@@ -29,9 +29,7 @@ const normalizeTodo = (value: unknown, projectColor: string): Todo | null => {
     id: todo.id,
     title: todo.title,
     completed: todo.completed,
-    color: typeof todo.color === 'string' && todo.color.trim()
-      ? todo.color
-      : projectColor,
+    color: projectColor,
     order: todo.order,
   };
 };
@@ -53,7 +51,7 @@ const normalizeProject = (value: unknown, index: number): Project | null => {
     return null;
   }
 
-  const color = getProjectColor(project.color, index);
+  const color = getProjectColorByIndex(index);
 
   return {
     id: project.id,

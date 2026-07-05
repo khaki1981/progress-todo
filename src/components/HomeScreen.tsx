@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useProjects } from '../hooks/useProjects';
 import { calculateTodoProgress } from '../utils/progress';
-import { ALL_TAB_COLOR, getProjectColor } from '../utils/todoColors';
+import { ALL_TAB_COLOR, getProjectColorByIndex } from '../utils/todoColors';
 import { ProgressCircle } from './ProgressCircle';
 import { ProjectActions } from './ProjectActions';
 import { ProjectDeleteDialog } from './ProjectDeleteDialog';
@@ -61,17 +61,21 @@ export function HomeScreen() {
   const activeProjectIndex = activeProject
     ? projects.findIndex((project) => project.id === activeProject.id)
     : -1;
+  const activeProjectColorIndex = Math.max(activeProjectIndex, 0);
+  const activeProjectColor = activeProject
+    ? getProjectColorByIndex(activeProjectColorIndex)
+    : ALL_TAB_COLOR;
   const todoListItems = activeProject
     ? activeProject.todos.map((todo) => ({
         projectId: activeProject.id,
-        projectColor: getProjectColor(activeProject.color, activeProjectIndex),
+        projectColor: activeProjectColor,
         projectName: activeProject.name,
         todo,
       }))
     : projects.flatMap((project, index) =>
         project.todos.map((todo) => ({
           projectId: project.id,
-          projectColor: getProjectColor(project.color, index),
+          projectColor: getProjectColorByIndex(index),
           projectName: project.name,
           todo,
         })),
@@ -79,9 +83,6 @@ export function HomeScreen() {
   const progress = calculateTodoProgress(
     todoListItems.map((item) => item.todo),
   );
-  const progressColor = activeProject
-    ? getProjectColor(activeProject.color, activeProjectIndex)
-    : ALL_TAB_COLOR;
 
   const handleProjectSubmit = (name: string) => {
     if (projectDialogMode === 'add') {
@@ -171,7 +172,7 @@ export function HomeScreen() {
         />
 
         <ProgressCircle
-          color={progressColor}
+          color={activeProjectColor}
           onAddTodo={() => setIsTodoDialogOpen(true)}
           progress={progress}
         />
