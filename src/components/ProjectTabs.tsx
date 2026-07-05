@@ -48,14 +48,14 @@ export function ProjectTabs({
       >
         <span className="project-tabs__label">すべて</span>
       </button>
-      {projects.map((project) => (
+      {projects.map((project, index) => (
         <button
           aria-pressed={project.id === activeProjectId}
           className="project-tabs__tab"
           data-active={project.id === activeProjectId}
           key={project.id}
           onClick={() => onSelectProject(project.id)}
-          style={getProjectTabStyle(getProjectColor(project.color))}
+          style={getProjectTabStyle(getProjectColor(project.color, index))}
           title={project.name}
           type="button"
         >

@@ -1,7 +1,6 @@
-export const ALL_TAB_COLOR = '#E8DDC5';
+export const ALL_TAB_COLOR = '#F7C948';
 
 export const PROJECT_COLORS = [
-  '#F7C948',
   '#6FCF97',
   '#F29E4C',
   '#56CCF2',
@@ -11,8 +10,27 @@ export const PROJECT_COLORS = [
 
 export const DEFAULT_PROJECT_COLOR = PROJECT_COLORS[0];
 
-export const getProjectColor = (color: string | undefined): string =>
-  color?.trim() || DEFAULT_PROJECT_COLOR;
-
 export const getNextProjectColor = (projectCount: number): string =>
-  PROJECT_COLORS[projectCount % PROJECT_COLORS.length];
+  PROJECT_COLORS[
+    ((projectCount % PROJECT_COLORS.length) + PROJECT_COLORS.length) %
+      PROJECT_COLORS.length
+  ];
+
+const normalizeColor = (color: string | undefined): string =>
+  color?.trim().toLowerCase() ?? '';
+
+export const getProjectColor = (
+  color: string | undefined,
+  fallbackIndex = 0,
+): string => {
+  const normalizedColor = color?.trim();
+
+  if (
+    normalizedColor &&
+    normalizeColor(normalizedColor) !== normalizeColor(ALL_TAB_COLOR)
+  ) {
+    return normalizedColor;
+  }
+
+  return getNextProjectColor(fallbackIndex);
+};

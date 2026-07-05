@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useProjects } from '../hooks/useProjects';
 import { calculateTodoProgress } from '../utils/progress';
+import { ALL_TAB_COLOR, getProjectColor } from '../utils/todoColors';
 import { ProgressCircle } from './ProgressCircle';
 import { ProjectActions } from './ProjectActions';
 import { ProjectDeleteDialog } from './ProjectDeleteDialog';
@@ -57,17 +58,20 @@ export function HomeScreen() {
   const closeTodoEditDialog = () => setTodoEditItem(null);
   const closeTodoDeleteDialog = () => setTodoDeleteItem(null);
   const todoTargetProject = activeProject ?? projects[0] ?? null;
+  const activeProjectIndex = activeProject
+    ? projects.findIndex((project) => project.id === activeProject.id)
+    : -1;
   const todoListItems = activeProject
     ? activeProject.todos.map((todo) => ({
         projectId: activeProject.id,
-        projectColor: activeProject.color,
+        projectColor: getProjectColor(activeProject.color, activeProjectIndex),
         projectName: activeProject.name,
         todo,
       }))
-    : projects.flatMap((project) =>
+    : projects.flatMap((project, index) =>
         project.todos.map((todo) => ({
           projectId: project.id,
-          projectColor: project.color,
+          projectColor: getProjectColor(project.color, index),
           projectName: project.name,
           todo,
         })),
@@ -75,6 +79,9 @@ export function HomeScreen() {
   const progress = calculateTodoProgress(
     todoListItems.map((item) => item.todo),
   );
+  const progressColor = activeProject
+    ? getProjectColor(activeProject.color, activeProjectIndex)
+    : ALL_TAB_COLOR;
 
   const handleProjectSubmit = (name: string) => {
     if (projectDialogMode === 'add') {
@@ -164,7 +171,7 @@ export function HomeScreen() {
         />
 
         <ProgressCircle
-          color={activeProject?.color}
+          color={progressColor}
           onAddTodo={() => setIsTodoDialogOpen(true)}
           progress={progress}
         />
