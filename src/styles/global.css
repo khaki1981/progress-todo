@@ -336,6 +336,10 @@ button {
   transition: stroke-dashoffset 180ms ease;
 }
 
+.progress__value--segment {
+  transition: stroke-dasharray 180ms ease, stroke-dashoffset 180ms ease;
+}
+
 .progress__label {
   align-items: center;
   display: flex;

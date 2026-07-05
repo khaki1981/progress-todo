@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useProjects } from '../hooks/useProjects';
 import { calculateTodoProgress } from '../utils/progress';
 import { ALL_TAB_COLOR, getProjectColorByIndex } from '../utils/todoColors';
-import { ProgressCircle } from './ProgressCircle';
+import { ProgressCircle, type ProgressSegment } from './ProgressCircle';
 import { ProjectActions } from './ProjectActions';
 import { ProjectDeleteDialog } from './ProjectDeleteDialog';
 import { ProjectFormDialog } from './ProjectFormDialog';
@@ -83,6 +83,12 @@ export function HomeScreen() {
   const progress = calculateTodoProgress(
     todoListItems.map((item) => item.todo),
   );
+  const progressSegments: ProgressSegment[] | undefined = activeProject
+    ? undefined
+    : projects.map((project, index) => ({
+        color: getProjectColorByIndex(index),
+        count: project.todos.filter((todo) => todo.completed).length,
+      }));
 
   const handleProjectSubmit = (name: string) => {
     if (projectDialogMode === 'add') {
@@ -175,6 +181,7 @@ export function HomeScreen() {
           color={activeProjectColor}
           onAddTodo={() => setIsTodoDialogOpen(true)}
           progress={progress}
+          segments={progressSegments}
         />
         <TodoList
           items={todoListItems}

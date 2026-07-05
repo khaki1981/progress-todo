@@ -1,15 +1,22 @@
 import type { ProgressSummary } from '../utils/progress';
 
+export type ProgressSegment = {
+  color: string;
+  count: number;
+};
+
 type ProgressCircleProps = {
   color?: string;
   onAddTodo: () => void;
   progress: ProgressSummary;
+  segments?: ProgressSegment[];
 };
 
 export function ProgressCircle({
   color,
   onAddTodo,
   progress,
+  segments,
 }: ProgressCircleProps) {
   const radius = 63;
   const strokeWidth = 14;
@@ -27,6 +34,34 @@ export function ProgressCircle({
         ? 'クリア！'
         : `あと${remainingCount}個でクリア`;
 
+  let segmentStartCount = 0;
+  const progressSegments =
+    segments && progress.totalCount > 0
+      ? segments.flatMap((segment) => {
+          const remainingSegmentCount =
+            progress.totalCount - segmentStartCount;
+          const segmentCount = Math.min(
+            Math.max(segment.count, 0),
+            remainingSegmentCount,
+          );
+
+          if (segmentCount <= 0) {
+            return [];
+          }
+
+          const startCount = segmentStartCount;
+          segmentStartCount += segmentCount;
+
+          return [
+            {
+              color: segment.color,
+              dashLength: (segmentCount / progress.totalCount) * circumference,
+              dashOffset: -(startCount / progress.totalCount) * circumference,
+            },
+          ];
+        })
+      : [];
+
   return (
     <section className="progress" aria-label="Project progress">
       <div className="progress__ring">
@@ -39,18 +74,38 @@ export function ProgressCircle({
             r={radius}
             strokeWidth={strokeWidth}
           />
-          <circle
-            className="progress__value"
-            cx="75"
-            cy="75"
-            fill="none"
-            r={radius}
-            strokeDasharray={circumference}
-            strokeDashoffset={progressOffset}
-            strokeLinecap="round"
-            strokeWidth={strokeWidth}
-            style={color ? { stroke: color } : undefined}
-          />
+          {segments ? (
+            progressSegments.map((segment, index) => (
+              <circle
+                className="progress__value progress__value--segment"
+                cx="75"
+                cy="75"
+                fill="none"
+                key={`${segment.color}-${index}`}
+                r={radius}
+                strokeDasharray={`${segment.dashLength} ${
+                  circumference - segment.dashLength
+                }`}
+                strokeDashoffset={segment.dashOffset}
+                strokeLinecap="butt"
+                strokeWidth={strokeWidth}
+                style={{ stroke: segment.color }}
+              />
+            ))
+          ) : (
+            <circle
+              className="progress__value"
+              cx="75"
+              cy="75"
+              fill="none"
+              r={radius}
+              strokeDasharray={circumference}
+              strokeDashoffset={progressOffset}
+              strokeLinecap="round"
+              strokeWidth={strokeWidth}
+              style={color ? { stroke: color } : undefined}
+            />
+          )}
         </svg>
         <div className="progress__label">
           <strong>
