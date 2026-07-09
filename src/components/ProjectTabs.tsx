@@ -1,7 +1,9 @@
 import {
+  Fragment,
   useCallback,
   useEffect,
   useRef,
+  useState,
   type CSSProperties,
 } from 'react';
 import type { Project } from '../types/app';
@@ -23,6 +25,12 @@ const getProjectTabStyle = (color: string): ProjectTabStyle => ({
 });
 
 const SCROLL_SETTLE_DELAY = 140;
+const LOOP_SET_COUNT = 5;
+const CENTER_SET_INDEX = Math.floor(LOOP_SET_COUNT / 2);
+const LOOP_SET_INDEXES = Array.from(
+  { length: LOOP_SET_COUNT },
+  (_, index) => index,
+);
 
 const getProjectTabs = (tabList: HTMLElement): HTMLElement[] =>
   Array.from(
@@ -32,8 +40,16 @@ const getProjectTabs = (tabList: HTMLElement): HTMLElement[] =>
 const findProjectTab = (
   tabList: HTMLElement,
   projectId: string,
+  setIndex?: number,
 ): HTMLElement | undefined =>
-  getProjectTabs(tabList).find((tab) => tab.dataset.projectId === projectId);
+  getProjectTabs(tabList).find((tab) => {
+    const tabSetIndex = Number(tab.dataset.loopSet);
+
+    return (
+      tab.dataset.projectId === projectId &&
+      (setIndex === undefined || tabSetIndex === setIndex)
+    );
+  });
 
 const getScrollInset = (tabList: HTMLElement): number => {
   const paddingLeft = Number.parseFloat(
@@ -85,13 +101,49 @@ const getNearestStartTab = (tabList: HTMLElement): HTMLElement | undefined => {
   }, undefined);
 };
 
+const normalizeLoopScrollPosition = (tabList: HTMLElement) => {
+  const nearestTab = getNearestStartTab(tabList);
+  const nearestProjectId = nearestTab?.dataset.projectId;
+  const nearestSetIndex = Number(nearestTab?.dataset.loopSet);
+
+  if (
+    !nearestTab ||
+    nearestProjectId === undefined ||
+    !Number.isInteger(nearestSetIndex) ||
+    (nearestSetIndex > 0 && nearestSetIndex < LOOP_SET_COUNT - 1)
+  ) {
+    return;
+  }
+
+  const centerTab = findProjectTab(
+    tabList,
+    nearestProjectId,
+    CENTER_SET_INDEX,
+  );
+
+  if (!centerTab) {
+    return;
+  }
+
+  const offsetFromNearestStart =
+    tabList.scrollLeft - getStartAlignedScrollLeft(tabList, nearestTab);
+
+  tabList.scrollTo({
+    behavior: 'auto',
+    left:
+      getStartAlignedScrollLeft(tabList, centerTab) + offsetFromNearestStart,
+  });
+};
+
 export function ProjectTabs({
   activeProjectId,
   onAddProject,
   onSelectProject,
   projects,
 }: ProjectTabsProps) {
+  const [activeSetIndex, setActiveSetIndex] = useState(CENTER_SET_INDEX);
   const tabListRef = useRef<HTMLElement>(null);
+  const manualSelectionRef = useRef<string | null>(null);
   const scrollSettleTimerRef = useRef<number | null>(null);
   const activeProjectIdRef = useRef(activeProjectId);
 
@@ -106,10 +158,22 @@ export function ProjectTabs({
       return;
     }
 
-    const activeTab = findProjectTab(tabList, activeProjectId);
+    if (manualSelectionRef.current === activeProjectId) {
+      manualSelectionRef.current = null;
+      return;
+    }
+
+    manualSelectionRef.current = null;
+
+    const activeTab = findProjectTab(
+      tabList,
+      activeProjectId,
+      CENTER_SET_INDEX,
+    );
 
     if (activeTab) {
-      scrollTabToStart(tabList, activeTab);
+      setActiveSetIndex(CENTER_SET_INDEX);
+      scrollTabToStart(tabList, activeTab, 'auto');
     }
   }, [activeProjectId, projects.length]);
 
@@ -123,11 +187,15 @@ export function ProjectTabs({
   );
 
   const handleSelectProject = useCallback(
-    (projectId: string) => {
+    (projectId: string, setIndex: number) => {
+      manualSelectionRef.current = projectId;
+      setActiveSetIndex(setIndex);
       onSelectProject(projectId);
 
       const tabList = tabListRef.current;
-      const selectedTab = tabList ? findProjectTab(tabList, projectId) : undefined;
+      const selectedTab = tabList
+        ? findProjectTab(tabList, projectId, setIndex)
+        : undefined;
 
       if (tabList && selectedTab) {
         scrollTabToStart(tabList, selectedTab);
@@ -137,37 +205,75 @@ export function ProjectTabs({
   );
 
   const handleScroll = useCallback(() => {
+    const tabList = tabListRef.current;
+
+    if (tabList) {
+      normalizeLoopScrollPosition(tabList);
+    }
+
     if (scrollSettleTimerRef.current) {
       window.clearTimeout(scrollSettleTimerRef.current);
     }
 
     scrollSettleTimerRef.current = window.setTimeout(() => {
       const tabList = tabListRef.current;
-      const nearestTab = tabList ? getNearestStartTab(tabList) : undefined;
+
+      if (!tabList) {
+        return;
+      }
+
+      const nearestTab = getNearestStartTab(tabList);
       const nearestProjectId = nearestTab?.dataset.projectId;
+      const nearestSetIndex = Number(nearestTab?.dataset.loopSet);
 
       if (
-        nearestProjectId !== undefined &&
-        nearestProjectId !== activeProjectIdRef.current
+        nearestProjectId === undefined ||
+        !Number.isInteger(nearestSetIndex)
       ) {
+        return;
+      }
+
+      manualSelectionRef.current = nearestProjectId;
+
+      if (nearestProjectId !== activeProjectIdRef.current) {
         onSelectProject(nearestProjectId);
       }
+
+      const centerTab = findProjectTab(
+        tabList,
+        nearestProjectId,
+        CENTER_SET_INDEX,
+      );
+      const shouldResetToCenter =
+        nearestSetIndex !== CENTER_SET_INDEX && centerTab !== undefined;
+      const nextActiveSetIndex = shouldResetToCenter
+        ? CENTER_SET_INDEX
+        : nearestSetIndex;
+      const nextActiveTab = shouldResetToCenter ? centerTab : nearestTab;
+
+      if (!nextActiveTab) {
+        return;
+      }
+
+      setActiveSetIndex(nextActiveSetIndex);
+      scrollTabToStart(
+        tabList,
+        nextActiveTab,
+        shouldResetToCenter ? 'auto' : 'smooth',
+      );
     }, SCROLL_SETTLE_DELAY);
   }, [onSelectProject]);
 
-  return (
-    <nav
-      className="project-tabs"
-      aria-label="Projects"
-      onScroll={handleScroll}
-      ref={tabListRef}
-    >
+  const renderProjectSet = (setIndex: number) => (
+    <Fragment key={`project-tab-set-${setIndex}`}>
       <button
-        aria-pressed={activeProjectId === ''}
+        aria-pressed={activeProjectId === '' && activeSetIndex === setIndex}
         className="project-tabs__tab"
-        data-active={activeProjectId === ''}
+        data-active={activeProjectId === '' && activeSetIndex === setIndex}
+        data-loop-set={setIndex}
         data-project-id=""
-        onClick={() => handleSelectProject('')}
+        key={`all-${setIndex}`}
+        onClick={() => handleSelectProject('', setIndex)}
         style={getProjectTabStyle(ALL_TAB_COLOR)}
         type="button"
       >
@@ -175,12 +281,17 @@ export function ProjectTabs({
       </button>
       {projects.map((project, index) => (
         <button
-          aria-pressed={project.id === activeProjectId}
+          aria-pressed={
+            project.id === activeProjectId && activeSetIndex === setIndex
+          }
           className="project-tabs__tab"
-          data-active={project.id === activeProjectId}
+          data-active={
+            project.id === activeProjectId && activeSetIndex === setIndex
+          }
+          data-loop-set={setIndex}
           data-project-id={project.id}
-          key={project.id}
-          onClick={() => handleSelectProject(project.id)}
+          key={`${project.id}-${setIndex}`}
+          onClick={() => handleSelectProject(project.id, setIndex)}
           style={getProjectTabStyle(getProjectColorByIndex(index))}
           title={project.name}
           type="button"
@@ -189,13 +300,27 @@ export function ProjectTabs({
         </button>
       ))}
       <button
+        aria-label="プロジェクトを追加"
         className="project-tabs__add"
+        data-loop-set={setIndex}
+        data-tab-role="add"
+        key={`add-${setIndex}`}
         onClick={onAddProject}
         type="button"
-        aria-label="プロジェクトを追加"
       >
         +
       </button>
+    </Fragment>
+  );
+
+  return (
+    <nav
+      className="project-tabs"
+      aria-label="Projects"
+      onScroll={handleScroll}
+      ref={tabListRef}
+    >
+      {LOOP_SET_INDEXES.map(renderProjectSet)}
     </nav>
   );
 }

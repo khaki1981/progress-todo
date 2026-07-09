@@ -129,12 +129,6 @@ button {
   display: none;
 }
 
-.project-tabs::after {
-  content: '';
-  flex: 0 0 calc(100% - 56px);
-  min-width: 22px;
-}
-
 .project-tabs__tab,
 .project-tabs__add {
   align-items: center;
