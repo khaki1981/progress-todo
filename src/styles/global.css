@@ -120,12 +120,19 @@ button {
   overflow-x: auto;
   padding: 2px 22px 0;
   position: relative;
+  scroll-padding-left: 22px;
   scrollbar-width: none;
   z-index: 3;
 }
 
 .project-tabs::-webkit-scrollbar {
   display: none;
+}
+
+.project-tabs::after {
+  content: '';
+  flex: 0 0 calc(100% - 56px);
+  min-width: 22px;
 }
 
 .project-tabs__tab,
