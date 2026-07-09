@@ -113,12 +113,15 @@ button {
 }
 
 .project-tabs {
+  align-items: flex-end;
   display: flex;
   gap: 8px;
-  margin: 0 -22px 24px;
+  margin: 0 -22px 0;
   overflow-x: auto;
-  padding: 2px 22px 4px;
+  padding: 2px 22px 0;
+  position: relative;
   scrollbar-width: none;
+  z-index: 3;
 }
 
 .project-tabs::-webkit-scrollbar {
@@ -139,8 +142,10 @@ button {
   font-weight: 800;
   min-width: 0;
   min-height: 34px;
+  margin-bottom: 4px;
   overflow: hidden;
   padding: 8px 13px;
+  position: relative;
 }
 
 .project-tabs__tab {
@@ -172,8 +177,13 @@ button {
 .project-tabs__tab[data-active='true'] {
   background: var(--project-tab-color);
   border-color: var(--project-tab-color);
-  box-shadow: 0 8px 18px -14px rgba(27, 24, 19, 0.58);
+  border-bottom-color: transparent;
+  border-radius: 10px 10px 0 0;
+  box-shadow: none;
   color: var(--accent-fg);
+  margin-bottom: 0;
+  min-height: 38px;
+  z-index: 4;
 }
 
 .project-tabs__tab[data-active='true']::before {
@@ -196,23 +206,12 @@ button {
   --project-panel-color: var(--accent);
   background: rgba(255, 250, 240, 0.46);
   border: 1px solid var(--project-panel-color);
-  border-radius: 24px;
+  border-radius: 0 24px 24px 24px;
   box-shadow: 0 18px 34px -32px rgba(27, 24, 19, 0.62);
-  margin: -8px -8px 0;
-  padding: 22px 14px 0;
+  margin: -1px -8px 0;
+  padding: 24px 14px 0;
   position: relative;
-}
-
-.project-panel::before {
-  background: var(--project-panel-color);
-  border-radius: 0 0 999px 999px;
-  content: '';
-  height: 4px;
-  left: 18px;
-  opacity: 0.86;
-  position: absolute;
-  right: 18px;
-  top: 0;
+  z-index: 1;
 }
 
 .project-actions {
