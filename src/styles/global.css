@@ -118,9 +118,9 @@ button {
   gap: 8px;
   margin: 0 -22px 0;
   overflow-x: auto;
-  padding: 2px 22px 0;
+  padding: 2px 22px 0 14px;
   position: relative;
-  scroll-padding-left: 22px;
+  scroll-padding-left: 14px;
   scrollbar-width: none;
   z-index: 3;
 }
@@ -178,12 +178,13 @@ button {
 .project-tabs__tab[data-active='true'] {
   background: var(--project-tab-color);
   border-color: var(--project-tab-color);
-  border-bottom-color: transparent;
+  border-bottom-color: var(--project-tab-color);
   border-radius: 10px 10px 0 0;
   box-shadow: none;
   color: var(--accent-fg);
   margin-bottom: 0;
   min-height: 38px;
+  transform: translateY(1px);
   z-index: 4;
 }
 
