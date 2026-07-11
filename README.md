@@ -1,16 +1,50 @@
 # Progress Todo
 
-A React + TypeScript + Vite PWA starter project for a local-first todo app.
+Progress Todo は、プロジェクトごとに Todo を管理し、進捗率を円グラフで確認できるシンプルな Todo アプリです。
 
-## Structure
+スマホで使いやすい操作感を重視し、プロジェクトごとの色分け、進捗リング、「すべて」タブでの全体進捗表示に対応しています。
 
-- Vite + React + TypeScript
-- PWA support via vite-plugin-pwa
-- LocalStorage-based persistence
-- No server required
+## 概要
 
-## Scripts
+- プロジェクトごとに Todo を管理できます
+- 円グラフで進捗率が一目でわかります
+- 「すべて」タブで全プロジェクトの進捗も確認できます
+- プロジェクトごとに色分けされます
+- スマホで使いやすいシンプルな Todo アプリです
 
-- `npm install`
-- `npm run dev`
-- `npm run build`
+## 主な機能
+
+- プロジェクト追加・編集・削除
+- Todo 追加・編集・削除
+- Todo の完了チェック
+- プロジェクト別進捗リング
+- 「すべて」タブのマルチカラー進捗リング
+- LocalStorage 保存
+- PWA 対応
+
+## 使用技術
+
+- React
+- TypeScript
+- Vite
+- PWA
+- LocalStorage
+
+## ローカル起動方法
+
+```bash
+npm install
+npm run dev
+```
+
+## ビルド方法
+
+```bash
+npm run build
+```
+
+## 補足
+
+- データはブラウザの LocalStorage に保存されます
+- サーバーやログイン機能は使っていません
+- 外部APIやクラウド同期は使用していません

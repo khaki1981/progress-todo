@@ -1,3 +1,20 @@
-# Release Plan
+# Release
 
-Initial release will provide the scaffold and tooling needed for future app development.
+## Progress Todo 初期完成版
+
+Progress Todo は、基本機能が一通り完成したため、この状態を初期完成版として記録します。
+
+実装済みの内容:
+
+- プロジェクト管理
+- Todo 管理
+- Todo 完了チェック
+- プロジェクト別進捗リング
+- 「すべて」タブのマルチカラー進捗リング
+- プロジェクトごとの色分け
+- LocalStorage 保存
+- PWA 対応
+
+今後は大きな機能追加よりも、UI / UX の磨き込みを中心に進める予定です。
+
+このバージョンを一度完成区切りとします。

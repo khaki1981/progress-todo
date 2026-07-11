@@ -1,8 +1,22 @@
 # Ideas
 
-Potential future enhancements:
+Progress Todo の今後の改善メモです。
 
-- Task categories and filters
-- Calendar views
-- Streak tracking
-- Dark mode
+今回は実装せず、初期完成版の次に検討する候補として残します。
+
+## UI / UX 改善
+
+- 空状態表示の改善
+- 完了時メッセージの改善
+- タブとメインパネルの一体感をさらに調整
+- Todo カードの余白・視認性調整
+- FAB ボタン位置の微調整
+- テーマカラーの調整
+- アニメーション追加
+- スマホ実機での細かな表示確認
+
+## 機能改善
+
+- ドラッグによる Todo 並び替え
+- プロジェクト並び替え
+- データのエクスポート・インポート
